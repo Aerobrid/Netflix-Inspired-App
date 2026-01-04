@@ -131,10 +131,15 @@ if(ENV_VARS.NODE_ENV === "production"){
 }
 
 // start the server and listen on the specified port
-// connect to database
-app.listen(PORT, () => {
-  console.log('Server started at http://localhost:' + PORT);
-  connectDB()
-      .then((res) => {console.log(res)})
-      .catch((err) => {console.log(err)});
-});
+// connect to database (we dont want our test environment to connect to it)
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, () => {
+    console.log('Server started at http://localhost:' + PORT);
+    connectDB()
+        .then((res) => {console.log(res)})
+        .catch((err) => {console.log(err)});
+  });
+}
+
+// export app for testing
+export default app;

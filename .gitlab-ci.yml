@@ -6,7 +6,6 @@ test_job:
   script:
     - echo "Running GitLab CI from GitHub mirror"
   rules:
-    # Run only on main pushes or merge requests targeting main
     - if: '$CI_COMMIT_BRANCH == "main"'
     - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main"'
     - when: never
