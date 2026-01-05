@@ -94,8 +94,7 @@ deploy:
   # create env file from CI vars, copy to Droplet, remove old container/image, run new container on port 5000
   script:
     - |
-      printf '%s
-    ' "PORT=${PORT}" "NODE_ENV=${NODE_ENV}" "MONGO_URI=${MONGO_URI}" "JWT_SECRET=${JWT_SECRET}" "TMDB_API_KEY=${TMDB_API_KEY}" > app.env
+      printf '%s\n' "PORT=${PORT}" "NODE_ENV=${NODE_ENV}" "MONGO_URI=${MONGO_URI}" "JWT_SECRET=${JWT_SECRET}" "TMDB_API_KEY=${TMDB_API_KEY}" > app.env
       chmod 600 app.env
       scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa -P ${DO_SSH_PORT:-22} app.env ${DO_SSH_USER}@${DO_SERVER_IP}:/tmp/app.env
       rm -f app.env
