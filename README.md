@@ -25,7 +25,7 @@ Environment variables (see `.env.sample`):
 
 ## Updates
 
-- Implemented GitLab CI pipeline with Github Actions mirror workflow
+- Implemented GitLab CI-CD pipeline with Github Actions mirror workflow
 - Added Jest Testing
 - Added Prometheus with Grafana to monitor app containers locally for development + Docker Compose
 - Deployed Docker image to AWS Elastic Container Registry
