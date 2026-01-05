@@ -52,7 +52,7 @@ publish-image:
   variables:
     # disable TLS cert handling to make this process easier
     DOCKER_TLS_CERTDIR: ""
-    IMAGE: "ghcr.io/${GHCR_USERNAME}/${CI_PROJECT_NAME}:${CI_COMMIT_SHA}"
+    IMAGE: "ghcr.io/${GHCR_USERNAME}/${CI_PROJECT_NAME_LOWER}:${CI_COMMIT_SHA}"
   needs:
     - job: build
       artifacts: false
@@ -66,3 +66,6 @@ publish-image:
   script:
     - docker build -t "$IMAGE" .
     - docker push "$IMAGE"
+  after_script:
+    - docker logout ghcr.io || true
+    - rm -f /root/.docker/config.json || true
