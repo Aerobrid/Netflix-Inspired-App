@@ -8,7 +8,9 @@ dotenv.config();
 export const ENV_VARS = {
   MONGO_URI: process.env.MONGO_URI,
   PORT: process.env.PORT || 5000,
-  JWT_SECRET: process.env.JWT_SECRET,
+  // Provide a non-production default for tests/CI when .env isn't present
+  // Use 'testsecret' to match the test file fallback when running tests locally or in CI
+  JWT_SECRET: process.env.JWT_SECRET || (process.env.NODE_ENV === 'test' ? 'testsecret' : undefined),
   NODE_ENV: process.env.NODE_ENV,
   TMDB_API_KEY: process.env.TMDB_API_KEY,
 };
