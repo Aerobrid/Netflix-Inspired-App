@@ -25,6 +25,7 @@ Environment variables (see `.env.sample`):
 
 ## Updates
 
+- Deployed to DigitalOcean Droplet, but can be easily configured for AWS, GCP, Azure, Hostinger, etc.
 - Implemented GitLab CI-CD pipeline with Github Actions mirror workflow
 - Added Jest Testing
 - Added Prometheus with Grafana to monitor app containers locally for development + Docker Compose
