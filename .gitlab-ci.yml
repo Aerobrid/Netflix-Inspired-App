@@ -7,6 +7,9 @@ stages:
 variables:
   NODE_ENV: production
 
+  # Ensure devDependencies are installed in CI (vite, eslint, jest, etc.)
+  NPM_CONFIG_PRODUCTION: "false"
+
 cache:
   key: "${CI_COMMIT_REF_SLUG}"
   paths:
@@ -18,9 +21,9 @@ build:
   image: node:lts
   script:
     - echo "Installing frontend dependencies"
-    - npm ci --prefix frontend
+    - npm ci --prefix frontend --include=dev
     - echo "Installing root dependencies"
-    - npm ci
+    - npm ci --include=dev
     - echo "Building App"
     - npm run build
     - echo "Running tests"
