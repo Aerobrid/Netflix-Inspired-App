@@ -10,7 +10,8 @@ export const generateTokenAndSetCookie = (userId, res) => {
   res.cookie("jwt-netflix", token, {
     maxAge: 15 * 24 * 60 * 60 * 1000,               // Cookie expiration time (15 days in milliseconds)
     httpOnly: true,                                 // Prevents client-side JavaScript from accessing the cookie (helps mitigate XSS attacks: cross-site scripting)
-    secure: ENV_VARS.NODE_ENV !== "development",    // Use secure cookies in production
+    // Use secure cookies only when the host is using HTTPS
+    secure: ENV_VARS.USE_HTTPS === true,
     sameSite: "strict"                              // Helps prevent CSRF attacks: cross-site request forgery
   });
   
