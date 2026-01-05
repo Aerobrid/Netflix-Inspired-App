@@ -52,7 +52,7 @@ publish-image:
   variables:
     # disable TLS cert handling to make this process easier
     DOCKER_TLS_CERTDIR: ""
-    IMAGE: "ghcr.io/${GHCR_USERNAME}/${CI_PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}"
+    IMAGE: "ghcr.io/${GHCR_USERNAME}/${CI_PROJECT_NAME}:${CI_COMMIT_SHA}"
   needs:
     - job: build
       artifacts: false
