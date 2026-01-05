@@ -25,7 +25,9 @@ Environment variables (see `.env.sample`):
 
 ## Updates
 
-- Added Prometheus with Grafana to monitor app containers locally for development
+- Implemented GitLab CI pipeline with Github Actions mirror workflow
+- Added Jest Testing
+- Added Prometheus with Grafana to monitor app containers locally for development + Docker Compose
 - Deployed Docker image to AWS Elastic Container Registry
 - Created an AWS Elastic Compute Cloud (EC2) instance to pull the ECR Docker image 
 - Deployed app using NGINX reverse proxy with valid domain name and SSL certification through certbot
@@ -34,6 +36,9 @@ Environment variables (see `.env.sample`):
 - Added GET endpoint to ping for MongoDB cluster via Cronitor. This makes it so that the link above is hopefully running 24/7. Note that this is a demo and service may be **unavailable at times**. 
 
 ## How to run when cloning 
+> **Note 1:** You will need to install Visual C++ Redistributable for running tests with mongodb-memory-server <br />
+> **Note 2:** This app is not guaranteed to instantly work with all node versions. You may need to play around with it.
+
 If you instead download project as zip: <br />
 
 - (Optional) Run this in the main folder and then go into the frontend folder to run **npm install** again to get proper dependencies:
