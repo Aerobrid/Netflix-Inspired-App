@@ -102,9 +102,9 @@ deploy:
       TMDB_API_KEY=${TMDB_API_KEY}
       EOF
       chmod 600 app.env
-      scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa -P ${DO_SSH_PORT:-22} app.env ${DO_SSH_USER}@${DO_SERVER_IP}:/home/${DO_SSH_USER}/app.env
+      scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa -P ${DO_SSH_PORT:-22} app.env ${DO_SSH_USER}@${DO_SERVER_IP}:/tmp/app.env
       rm -f app.env
-      ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa -p ${DO_SSH_PORT:-22} ${DO_SSH_USER}@${DO_SERVER_IP} "docker pull ${IMAGE} && docker stop app || true && docker rm app || true && docker run -d --name app --env-file /home/${DO_SSH_USER}/app.env -p 5000:5000 ${IMAGE} && rm -f /home/${DO_SSH_USER}/app.env && docker image prune -af"
+      ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa -p ${DO_SSH_PORT:-22} ${DO_SSH_USER}@${DO_SERVER_IP} "docker pull ${IMAGE} && docker stop app || true && docker rm app || true && docker run -d --name app --env-file /tmp/app.env -p 5000:5000 ${IMAGE} && rm -f /tmp/app.env && docker image prune -af"
   after_script:
     - rm -f ~/.ssh/id_rsa || true
     - rm -f app.env || true
