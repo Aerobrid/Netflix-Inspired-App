@@ -1,4 +1,4 @@
-# Note: this is the default image, the ones within the jobs overrride it
+# Note: use default node image; install libssl in the job before running build/tests
 image: node:lts
 
 stages:
@@ -19,6 +19,10 @@ cache:
 build:
   stage: build
   image: node:lts
+  before_script:
+    - echo "Ensuring OpenSSL libs are available for mongodb-memory-server"
+    - apt-get update -y
+    - apt-get install -y libssl1.1 || apt-get install -y libssl3 || true
   script:
     - echo "Installing frontend dependencies"
     - npm ci --prefix frontend --include=dev
