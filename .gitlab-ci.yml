@@ -1,14 +1,14 @@
-# Use Debian Bullseye Node image so OpenSSL 1.1 (libcrypto.so.1.1) is available
-# This avoids installing libssl manually in the job.
+# Default image to be used within the jobs (can be overriden within jobs)
+# Used Debian Bullseye Node image so OpenSSL 1.1 (libcrypto.so.1.1) is available (gitlab CI would not work without)
 image: node:18-bullseye
 
 stages:
   - build
+  - publish
 
 variables:
   NODE_ENV: production
 
-  # Ensure devDependencies are installed in CI (vite, eslint, jest, etc.)
   NPM_CONFIG_PRODUCTION: "false"
 
 cache:
@@ -34,9 +34,35 @@ build:
       - build/
       - dist/
     expire_in: 1 day
+  # on push to main or PR (MR in gitlab)
   rules:
     - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "main"'
       when: always
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main"'
       when: always
     - when: never
+
+publish-image:
+  stage: publish
+  # docker inside of docker!
+  image: docker:24
+  services:
+    - name: docker:24-dind
+      alias: dind
+  variables:
+    # disable TLS cert handling to make this process easier
+    DOCKER_TLS_CERTDIR: ""
+    IMAGE: "ghcr.io/${GHCR_USERNAME}/${CI_PROJECT_NAME}:${CI_COMMIT_SHORT_SHA}"
+  needs:
+    - job: build
+      artifacts: false
+  # only on push to main
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "main"'
+      when: on_success
+    - when: never
+  before_script:
+    - echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USERNAME" --password-stdin
+  script:
+    - docker build -t "$IMAGE" .
+    - docker push "$IMAGE"
